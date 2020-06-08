@@ -211,7 +211,7 @@ getVersion(){
             return 3
         elif [[ $RETVAL -ne 0 ]];then
             return 2
-        elif [[ `echo $NEW_VER | cut -d. -f-2` != `echo $CUR_VER | cut -d. -f-2` ]];then
+        elif [[ "$NEW_VER" != "$CUR_VER" ]];then
             return 1
         fi
         return 0
@@ -270,14 +270,12 @@ installV2Ray(){
         return 1
     fi
     makeExecutable v2ray
-    copyFile geoip.dat
-    copyFile geosite.dat
 
     # Install V2Ray server config to /etc/v2ray
     if [[ ! -f "/etc/v2ray/config.json" ]]; then
         mkdir -p /etc/v2ray
         mkdir -p /var/log/v2ray
-        cp "${VSRC_ROOT}/vpoint_vmess_freedom.json" "/etc/v2ray/config.json"
+        cp "${VSRC_ROOT}/config.json" "/etc/v2ray/config.json"
         if [[ $? -ne 0 ]]; then
             colorEcho ${YELLOW} "Failed to create V2Ray configuration file. Please create it manually."
             return 1
